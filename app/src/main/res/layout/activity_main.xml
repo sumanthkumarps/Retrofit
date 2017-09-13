@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:orientation="vertical"
+    android:weightSum="1"
+    tools:context="com.effone.retrofit.MainActivity">
+
+    <include layout="@layout/fragment_common_header" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight=".62"
+        android:orientation="horizontal">
+
+        <!--  first section we are handling her-->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".49"
+            android:layout_marginTop="5dp"
+            android:orientation="vertical"
+            android:padding="5dp">
+
+
+            <TextView
+                android:id="@+id/tv_comapany_name"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight=".20"
+                android:gravity="center"
+                android:drawableTop="@mipmap/logo"
+                android:textColor="@android:color/black"
+                android:background="@android:color/darker_gray"
+                android:text="Effone Technology"
+                android:textSize="@dimen/about" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/divider" />
+            <TextView
+                android:id="@+id/tv_dateandtime"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight=".15"
+                android:textColor="@android:color/black"
+                android:gravity="right|center"
+                android:textSize="@dimen/date_time" />
+
+            <TextView
+                android:id="@+id/tv_about_heading"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight=".10"
+                android:gravity="left|center"
+                android:textColor="@android:color/black"
+                android:text="About"
+                android:textSize="@dimen/heading" />
+
+            <TextView
+                android:id="@+id/tv_about_text"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight=".40"
+                android:text="@string/aboutUs"
+                android:textSize="@dimen/about" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_weight=".005"
+            android:background="@color/divider" />
+
+        <!--  seconf section we are handling her-->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".49"
+            android:orientation="vertical"
+            android:padding="5dp">
+
+            <TextView
+                android:id="@+id/tv_booking_app"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.33"
+                android:drawableTop="@mipmap/ic_booking_appiontment"
+                android:gravity="center"
+                android:padding="10dp"
+                android:textColor="@android:color/black"
+                android:text="@string/booking_app"
+                android:textAlignment="center"
+                android:textSize="@dimen/heading" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight=".005"
+                android:background="@color/divider" />
+
+            <TextView
+                android:id="@+id/tv_history"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.33"
+                android:drawableTop="@mipmap/ic_history"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="@string/histroy"
+                android:textColor="@android:color/black"
+                android:textAlignment="center"
+                android:textSize="@dimen/heading" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight=".005"
+                android:background="@color/divider" />
+
+            <TextView
+                android:id="@+id/tv_contact_us"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="0.33"
+                android:drawableTop="@mipmap/ic_contact_us"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="@string/contact_us"
+                android:textColor="@android:color/black"
+                android:textAlignment="center"
+                android:textSize="@dimen/heading" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight=".003"
+        android:background="@color/divider" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight=".38"
+        android:orientation="vertical"
+        android:padding="5dp"
+        android:weightSum="1"
+        >
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.02"
+            android:padding="5dp"
+            android:paddingBottom="5dp"
+            android:paddingTop="10dp"
+            android:background="@color/dayName"
+            android:text="@string/upcomingAppointment"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/heading"
+            android:textStyle="bold" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight=".005"
+            android:background="@color/divider" />
+
+        <ListView
+            android:id="@+id/lv_upcomingAppointent"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.98"></ListView>
+    </LinearLayout>
+</LinearLayout>
