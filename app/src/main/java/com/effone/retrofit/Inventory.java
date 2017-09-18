@@ -13,6 +13,39 @@ import com.activeandroid.annotation.Table;
 
 public class Inventory extends Model {
 
+
+
+
+    @Column(name = "AdvanceBookingDays ")
+    public int AdvanceBookingDays;
+    @Column(name = "Fax ")
+    public String Fax;
+    @Column(name = "LeadTime ")
+    public int LeadTime;
+    @Column(name = "IsIntrinsic ")
+    public Boolean IsIntrinsic;
+    @Column(name = "IsUnUsed ")
+    public Boolean IsUnUsed;
+    @Column(name = "AuditID ")
+    public int AuditID;
+    @Column(name = "IsAppointmentsForever ")
+    public Boolean IsAppointmentsForever;
+    @Column(name = "AptStartRangeDate ")
+    public String AptStartRangeDate;
+    @Column(name = "IsActive ")
+    public Boolean IsActive;
+    @Column(name = "OrgID ")
+    public int OrgID;
+    @Column(name = "CutOffTime ")
+    public String CutOffTime;
+    @Column(name = "Latitude ")
+    public int Latitude;
+    @Column(name = "LocationTimeZone ")
+    public String LocationTimeZone;
+    @Column(name = "Longitude ")
+    public int Longitude;
+    @Column(name = "AptEndRangeDate ")
+    public String AptEndRangeDate;
     //The table consist only one field name
     @Column(name = "LocID ")
     public int LocID ;

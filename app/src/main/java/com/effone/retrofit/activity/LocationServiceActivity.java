@@ -91,6 +91,21 @@ public class LocationServiceActivity extends AppCompatActivity implements Adapte
             inventory.LocName=mLocation.get(i).getLocName();
             inventory.Phone1=mLocation.get(i).getPhone1();
             inventory.Phone2=mLocation.get(i).getPhone2();
+            inventory.AptEndRangeDate=mLocation.get(i).getAptEndRangeDate();
+            inventory.AptStartRangeDate=mLocation.get(i).getAptStartRangeDate();
+            inventory.AdvanceBookingDays=mLocation.get(i).getAdvanceBookingDays();
+            inventory.AuditID=mLocation.get(i).getAuditID();
+            inventory.CutOffTime=mLocation.get(i).getCutOffTime();
+            inventory.Fax=mLocation.get(i).getFax();
+            inventory.IsIntrinsic=mLocation.get(i).getIsIntrinsic();
+            inventory.IsUnUsed=mLocation.get(i).getIsUnUsed();
+            inventory.Longitude=mLocation.get(i).getLongitude();
+            inventory.LocationTimeZone=mLocation.get(i).getLocationTimeZone();
+            inventory.Latitude=mLocation.get(i).getLatitude();
+            inventory.OrgID=mLocation.get(i).getOrgID();
+            inventory.IsActive=mLocation.get(i).getIsActive();
+            inventory.IsAppointmentsForever=mLocation.get(i).getIsAppointmentsForever();
+            inventory.LeadTime=mLocation.get(i).getLeadTime();
             //Saving name to sqlite database
             inventory.save();
 
