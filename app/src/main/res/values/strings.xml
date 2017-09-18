@@ -40,9 +40,36 @@
     <string name="appointment_details">Appointment Details</string>
 
 
+    <string name="token">B3Yhavq16yxYIDDVYT4hyS20Y597dsDa</string>
 
 
 
+
+    <!-- database table Names and entity names-->
+    <string name="location_table">Location</string> <!-- location table name -->
+    <string name="loc_ic">loc_id</string>
+    <string name="org_id">org_id</string>
+    <string name="loc_name">loc_name</string>
+    <string name="apt_start_date">apt_start_date</string>
+    <string name="apt_end_date">apt_end_date</string>
+    <string name="location_time_zone">location_time_zone</string>
+    <string name="advance_booking_days">advance_booking_days</string>
+    <string name="is_active">is_active</string>
+
+
+    <string name="service_table">Service</string> <!-- service table name -->
+    <string name="service_id">service_id</string>
+    <string name="state">state</string>
+    <string name="country">country</string>
+
+
+    <string name="hoildays_table">Hoilday</string> <!-- Hoildays table name -->
+    <string name="hoilday_id">hoilday_id</string>
+
+
+    <string name="ServiceXLocation_table">ServiceXLocation</string> <!-- ServiceXlocation table name -->
+    <string name="serviceXLocaiton_ic">servxlocation_id</string>
+    <string name="appointment_duration">appointment_duration</string>
 
 
 
