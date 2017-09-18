@@ -9,51 +9,63 @@ import com.activeandroid.annotation.Table;
  */
 
 //This is our table name
-@Table(name = "location")
-
+@Table(name = "Inventory")
 public class Inventory extends Model {
 
-
-
-
-    @Column(name = "AdvanceBookingDays ")
+    @Column(name = "AdvanceBookingDays")
     public int AdvanceBookingDays;
-    @Column(name = "Fax ")
+    @Column(name = "Fax")
     public String Fax;
-    @Column(name = "LeadTime ")
+    @Column(name = "LeadTime")
     public int LeadTime;
-    @Column(name = "IsIntrinsic ")
+    @Column(name = "IsIntrinsic")
     public Boolean IsIntrinsic;
-    @Column(name = "IsUnUsed ")
+    @Column(name = "IsUnUsed")
     public Boolean IsUnUsed;
-    @Column(name = "AuditID ")
+    @Column(name = "AuditID")
     public int AuditID;
-    @Column(name = "IsAppointmentsForever ")
+    @Column(name = "IsAppointmentsForever")
     public Boolean IsAppointmentsForever;
-    @Column(name = "AptStartRangeDate ")
+    @Column(name = "AptStartRangeDate")
     public String AptStartRangeDate;
-    @Column(name = "IsActive ")
+    @Column(name = "IsActive")
     public Boolean IsActive;
-    @Column(name = "OrgID ")
+    @Column(name = "OrgID")
     public int OrgID;
-    @Column(name = "CutOffTime ")
+    @Column(name = "CutOffTime")
     public String CutOffTime;
-    @Column(name = "Latitude ")
+    @Column(name = "Latitude")
     public int Latitude;
-    @Column(name = "LocationTimeZone ")
+    @Column(name = "LocationTimeZone")
     public String LocationTimeZone;
-    @Column(name = "Longitude ")
+    @Column(name = "Longitude")
     public int Longitude;
-    @Column(name = "AptEndRangeDate ")
+    @Column(name = "AptEndRangeDate")
     public String AptEndRangeDate;
     //The table consist only one field name
-    @Column(name = "LocID ")
-    public int LocID ;
-    @Column(name = "LocName ")
-    public String LocName ;
-    @Column(name = "Phone1  ")
-    public String Phone1  ;
-    @Column(name = "Phone2  ")
-    public String Phone2  ;
+    @Column(name = "LocID")
+    public int LocID;
+    @Column(name = "LocName")
+    public String LocName;
+    @Column(name = "Phone1")
+    public String Phone1;
+    @Column(name = "Phone2")
+    public String Phone2;
+
+    @Column(name = "AddressLine1")
+    public String AddressLine1;
+    @Column(name = "AddressLine2")
+    public String AddressLine2;
+    @Column(name = "AddressLine3")
+    public String AddressLine3;
+    @Column(name = "City")
+    public String City;
+    @Column(name = "State")
+    public String State;
+    @Column(name = "Zip")
+    public String Zip;
+    @Column(name = "Country")
+    public String Country;
+
 
 }
