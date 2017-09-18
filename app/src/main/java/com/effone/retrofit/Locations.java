@@ -9,8 +9,8 @@ import com.activeandroid.annotation.Table;
  */
 
 //This is our table name
-@Table(name = "Inventory")
-public class Inventory extends Model {
+@Table(name = "Locations")
+public class Locations extends Model {
 
     @Column(name = "AdvanceBookingDays")
     public int AdvanceBookingDays;

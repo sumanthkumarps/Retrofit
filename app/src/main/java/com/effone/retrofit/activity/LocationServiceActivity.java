@@ -11,11 +11,17 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.effone.retrofit.Inventory;
+import com.activeandroid.ActiveAndroid;
+import com.activeandroid.Model;
+import com.activeandroid.query.Select;
+
+import com.effone.retrofit.Locations;
 import com.effone.retrofit.R;
 import com.effone.retrofit.adapter.LocationAdapter;
 import com.effone.retrofit.adapter.ServiceTypeAdapter;
 
+import com.effone.retrofit.databaseModel.LocationXServices;
+import com.effone.retrofit.databaseModel.Services;
 import com.effone.retrofit.model.Location;
 import com.effone.retrofit.model.LocationAndService;
 import com.effone.retrofit.model.LocationsXService;
@@ -24,6 +30,7 @@ import com.effone.retrofit.rest.ApiClient;
 import com.effone.retrofit.rest.ApiInterface;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -82,10 +89,10 @@ public class LocationServiceActivity extends AppCompatActivity implements Adapte
 
     }
 
-    private void insertDataIntoDatabase() {
+    private void insertLocationDataIntoDatabase() {
         for (int i = 0; i < mLocation.size(); i++) {
             //If name is not blank creating a new Inventory object
-            Inventory inventory = new Inventory();
+            Locations inventory = new Locations();
             //Adding the given name to inventory name
             inventory.LocID = mLocation.get(i).getLocID();
             inventory.LocName=mLocation.get(i).getLocName();
@@ -109,7 +116,6 @@ public class LocationServiceActivity extends AppCompatActivity implements Adapte
             inventory.AddressLine1=mLocation.get(i).getAddress().getAddressLine1();
             inventory.AddressLine2=mLocation.get(i).getAddress().getAddressLine2();
             inventory.AddressLine3=mLocation.get(i).getAddress().getAddressLine3();
-
             inventory.City=mLocation.get(i).getAddress().getCity();
             inventory.State=mLocation.get(i).getAddress().getState();
             inventory.Zip=mLocation.get(i).getAddress().getZip();
@@ -117,15 +123,22 @@ public class LocationServiceActivity extends AppCompatActivity implements Adapte
             //Saving name to sqlite database
             inventory.save();
 
-
-            Toast.makeText(this, "Inventory Saved Successfully", Toast.LENGTH_SHORT).show();
-
         }
 
 
     }
 
     private void gotDataFromServer() {
+        ActiveAndroid.beginTransaction();
+        try {
+            insertLocationDataIntoDatabase();
+            insertServiceDataIntoDatabase();
+            insertLocXServDataIntoDatabase();
+            ActiveAndroid.setTransactionSuccessful();
+        }finally {
+            ActiveAndroid.endTransaction();
+        }
+
 
         if (mService == null || mService.size() > 1) {
             setContentView(R.layout.activity_location_service);
@@ -140,14 +153,14 @@ public class LocationServiceActivity extends AppCompatActivity implements Adapte
 
         if (mLocation != null) {
             ArrayList<String> locations = new ArrayList<>();
-            LocationAdapter mLocationAdapter = new LocationAdapter(getApplicationContext(), mLocation);
+            LocationAdapter mLocationAdapter = new LocationAdapter(getApplicationContext(), getAllLocation());
 
             mSpinner.setAdapter(mLocationAdapter);
             if (countOfServiceType > 1) {
-                mServiceTypeAdapter = new ServiceTypeAdapter(this, mService, mLocationXService);
+                mServiceTypeAdapter = new ServiceTypeAdapter(this, getAllService(), getAllLocXSer());
             } else {
                 // basedOnCondition();
-                mServiceTypeAdapter = new ServiceTypeAdapter(this, mService, mLocationXService);
+                mServiceTypeAdapter = new ServiceTypeAdapter(this,  getAllService(), getAllLocXSer());
             }
         }
         mLvServiceType.setAdapter(mServiceTypeAdapter);
@@ -158,7 +171,49 @@ public class LocationServiceActivity extends AppCompatActivity implements Adapte
             basedOnCondition();
         }
 
-        insertDataIntoDatabase();
+    }
+
+    private List<LocationXServices> getAllLocXSer() {
+        return new Select()
+                .from(LocationXServices.class)
+                .execute();
+    }
+
+    private List<Services> getAllService() {
+        return new Select()
+                .from(Services.class)
+                .execute();
+    }
+
+    private void insertLocXServDataIntoDatabase() {
+        for(int i=0;i<mLocationXService.size();i++){
+            LocationXServices locationsXService=new LocationXServices();
+            locationsXService.LocXServiceID=mLocationXService.get(i).getLocXServiceID();
+            locationsXService.LocId=mLocationXService.get(i).getLocID();
+            locationsXService.ServiceID=mLocationXService.get(i).getServiceID();
+            locationsXService.save();
+        }
+
+    }
+
+    private void insertServiceDataIntoDatabase() {
+
+        for(int i=0;i<mService.size();i++) {
+            Services service=new Services();
+            service.ServiceID = mService.get(i).getServiceID();
+            service.ServiceName=mService.get(i).getServiceName();
+            service.Description=mService.get(i).getDescription();
+            service.Duration=mService.get(i).getDuration();
+            service.IsActive=mService.get(i).getIsActive();
+            service.save();
+        }
+    }
+
+    private List<Locations> getAllLocation() {
+        //Getting all items stored in Inventory table
+        return new Select()
+                .from(Locations.class)
+                .execute();
     }
 
     private void basedOnCondition() {

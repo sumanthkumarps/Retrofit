@@ -113,6 +113,7 @@ public class AppointementBookingActivity extends AppCompatActivity {
         mTvSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                postingData();
            //     openActivity(AppointementBookingActivity.this, AppointmentAcknowledgementActivity.class);
             }
         });
@@ -131,6 +132,60 @@ public class AppointementBookingActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void postingData() {
+
+        AppointmentBookingModel body = new AppointmentBookingModel();
+        body.setAppointmentID("0");
+        body.setLocID("1");
+        body.setUserID("6");
+        body.setConfirmationNo("0");
+        body.setAppointmentTypeRefID("27");
+        body.setServiceID("2");
+        body.setStartTime("9/13/2017 3:30:00 PM");
+        body.setEndTime("9/13/2017 4:00:00 PM");
+        body.setDuration("30");
+        body.setScheduledTimeZone("India Standard Time");
+        body.setSendEmailReminder("0");
+        body.setSendTextReminder("0");
+        body.setAdditionalEmail("");
+        body.setIsLoggedIn("0");
+        body.setIsCheckedIn("0");
+        body.setIsCancelled("0");
+        body.setCancelTypeRefID("null");
+        body.setCancelledBy("null");
+        body.setIsAssigned("0");
+        body.setAssignedTo("null");
+        body.setAuditID("6");
+
+        ApiInterface apiService =
+                ApiClient.getClient().create(ApiInterface.class);
+        Call<AppointmentBookingModel> response = apiService.createAppointment(getString(R.string.token), body);
+        response.enqueue(new Callback<AppointmentBookingModel>()
+        {
+            @Override
+            public void onResponse(Call<AppointmentBookingModel> call, retrofit2.Response<AppointmentBookingModel> rawResponse)
+            {
+                try
+                {
+                    Toast.makeText(AppointementBookingActivity.this,"done"+ rawResponse.toString(),Toast.LENGTH_SHORT).show();
+                    //get your response....
+                    Log.d(TAG, "RetroFit2.0 :RetroGetLogin: " + rawResponse.toString());
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<AppointmentBookingModel> call, Throwable throwable)
+            {
+                // other stuff...
+                Log.d(TAG, "RetroFit2.0 :RetroGetLogin: " + throwable.toString());
+            }
+        });
     }
 
 

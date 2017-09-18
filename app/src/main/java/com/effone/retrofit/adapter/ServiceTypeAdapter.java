@@ -10,7 +10,8 @@ import android.widget.TextView;
 
 
 import com.effone.retrofit.R;
-import com.effone.retrofit.model.Location;
+import com.effone.retrofit.databaseModel.LocationXServices;
+import com.effone.retrofit.databaseModel.Services;
 import com.effone.retrofit.model.LocationsXService;
 import com.effone.retrofit.model.Service;
 
@@ -23,13 +24,13 @@ import java.util.List;
 
 public class ServiceTypeAdapter extends BaseAdapter {
     private Context mContext;
-    private List<Service> mAppointmentDateTime;
+    private List<Services> mAppointmentDateTime;
     private LayoutInflater mLayoutInflater ;
     private  int setVisiblity;
-    private  ArrayList<LocationsXService> mLocationxService;
+    private  List<LocationXServices> mLocationxService;
 
 
-    public ServiceTypeAdapter(Context context, List<Service> list, ArrayList<LocationsXService> mLocationxService) {
+    public ServiceTypeAdapter(Context context, List<Services> list, List<LocationXServices> mLocationxService) {
         this.mContext=context;
         this.mAppointmentDateTime=list;
         mLayoutInflater = (LayoutInflater) mContext
@@ -38,6 +39,7 @@ public class ServiceTypeAdapter extends BaseAdapter {
 
 
     }
+
 
     @Override
     public int getCount() {
@@ -70,8 +72,8 @@ public class ServiceTypeAdapter extends BaseAdapter {
         }else
             holder = (ServiceTypeItems) vi.getTag();
 
-        holder.mTvServiceType.setText(mAppointmentDateTime.get(position).getServiceName());
-        holder.mTvServiceDescr.setText(mAppointmentDateTime.get(position).getDescription());
+        holder.mTvServiceType.setText(mAppointmentDateTime.get(position).ServiceName);
+        holder.mTvServiceDescr.setText(mAppointmentDateTime.get(position).Description);
         if(mAppointmentDateTime.size() > 1 ){
             holder.mIvServiceTypeIcon.setVisibility(View.VISIBLE);
         }else
