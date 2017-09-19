@@ -1,10 +1,12 @@
 package com.effone.retrofit.model;
 
+import io.realm.RealmObject;
+
 /**
  * Created by sumanth.peddinti on 9/13/2017.
  */
 
-public class LocationsXService {
+public class LocationsXService extends RealmObject {
     private int LocXServiceID;
 
     public int getLocXServiceID() { return this.LocXServiceID; }

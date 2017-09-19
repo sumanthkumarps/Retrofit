@@ -1,5 +1,7 @@
 apply plugin: 'com.android.application'
 
+apply plugin: 'realm-android'
+
 android {
     compileSdkVersion 26
     buildToolsVersion "26.0.0"
@@ -34,4 +36,6 @@ dependencies {
     compile 'com.squareup.retrofit2:converter-gson:2.0.2'
     compile 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
 
+
+    testCompile 'org.testng:testng:6.9.6'
 }

@@ -9,18 +9,12 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.activeandroid.ActiveAndroid;
-import com.activeandroid.Model;
-import com.activeandroid.query.Select;
-
-import com.effone.retrofit.Locations;
 import com.effone.retrofit.R;
 import com.effone.retrofit.adapter.LocationAdapter;
 import com.effone.retrofit.adapter.ServiceTypeAdapter;
 
-import com.effone.retrofit.databaseModel.LocationXServices;
+import com.effone.retrofit.databaseModel.Locations;
 import com.effone.retrofit.databaseModel.Services;
 import com.effone.retrofit.model.Location;
 import com.effone.retrofit.model.LocationAndService;
@@ -32,6 +26,8 @@ import com.effone.retrofit.rest.ApiInterface;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.realm.Realm;
+import io.realm.RealmResults;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -51,15 +47,15 @@ public class LocationServiceActivity extends AppCompatActivity implements Adapte
     private ArrayList<Service> mService;
     private ArrayList<LocationsXService> mLocationXService;
     private int countOfServiceType = 0;
+    private Realm realm;
 
-
+    Locations mLoLocation;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         getLocationDetails();
-
-
+        this.realm = Realm.getDefaultInstance();
+        countOfServiceType=getAllService().size();
     }
 
     private void getLocationDetails() {
@@ -90,7 +86,48 @@ public class LocationServiceActivity extends AppCompatActivity implements Adapte
     }
 
     private void insertLocationDataIntoDatabase() {
+
         for (int i = 0; i < mLocation.size(); i++) {
+            //If name is not blank creating a new Inventory object
+            realm.beginTransaction();
+            com.effone.retrofit.databaseModel.Locations inventory = realm.createObject(com.effone.retrofit.databaseModel.Locations.class);
+
+            //Adding the given name to inventory name
+            inventory.setLocID(mLocation.get(i).getLocID());
+            inventory.setLocName(mLocation.get(i).getLocName());
+            inventory.setPhone1(mLocation.get(i).getPhone1());
+            inventory.setPhone2(mLocation.get(i).getPhone2());
+            inventory.setAptEndRangeDate(mLocation.get(i).getAptEndRangeDate());
+            inventory.setAptStartRangeDate(mLocation.get(i).getAptStartRangeDate());
+            inventory.setAdvanceBookingDays(mLocation.get(i).getAdvanceBookingDays());
+            inventory.setAuditID(mLocation.get(i).getAuditID());
+            inventory.setCutOffTime(mLocation.get(i).getCutOffTime());
+            inventory.setFax(mLocation.get(i).getFax());
+           /* inventory.setIntrinsic(mLocation.get(i).getIsIntrinsic());
+            inventory.setUnUsed(mLocation.get(i).getIsUnUsed());*/
+            inventory.setLongitude(mLocation.get(i).getLongitude());
+            inventory.setLocationTimeZone(mLocation.get(i).getLocationTimeZone());
+            inventory.setLatitude(mLocation.get(i).getLatitude());
+            inventory.setOrgID(mLocation.get(i).getOrgID());
+            /*inventory.setActive(mLocation.get(i).getIsActive());
+            inventory.setAppointmentsForever(mLocation.get(i).getIsAppointmentsForever());*/
+            inventory.setLeadTime(mLocation.get(i).getLeadTime());
+            inventory.setAddressLine1(mLocation.get(i).getAddress().getAddressLine1());
+            inventory.setAddressLine2(mLocation.get(i).getAddress().getAddressLine2());
+            inventory.setAddressLine3(mLocation.get(i).getAddress().getAddressLine3());
+            inventory.setCity(mLocation.get(i).getAddress().getCity());
+            inventory.setState(mLocation.get(i).getAddress().getState());
+            inventory.setZip(mLocation.get(i).getAddress().getZip());
+            inventory.setCountry(mLocation.get(i).getAddress().getCountry());
+            // inventory.add(inventory);
+           /* realm.beginTransaction();
+            realm.copyToRealm(inventory);
+            realm.commitTransaction();*/
+            realm.insert(inventory);
+            realm.commitTransaction();
+        }
+
+      /*  for (int i = 0; i < mLocation.size(); i++) {
             //If name is not blank creating a new Inventory object
             Locations inventory = new Locations();
             //Adding the given name to inventory name
@@ -123,24 +160,34 @@ public class LocationServiceActivity extends AppCompatActivity implements Adapte
             //Saving name to sqlite database
             inventory.save();
 
-        }
+        }*/
 
 
     }
+    Service mSpService;
+    private List<Locations> viewRecord() {
+        RealmResults<com.effone.retrofit.databaseModel.Locations> results = realm.where(com.effone.retrofit.databaseModel.Locations.class).findAll();
+        List<com.effone.retrofit.databaseModel.Locations> mLocations = new ArrayList<>();
+        for (com.effone.retrofit.databaseModel.Locations student : results) {
+            Locations locations = new Locations();
+            locations.setLocName(student.getLocName());
+            mLocations.add(locations);
+        }
+        return mLocations;
+    }
 
     private void gotDataFromServer() {
-        ActiveAndroid.beginTransaction();
+
         try {
             insertLocationDataIntoDatabase();
             insertServiceDataIntoDatabase();
             insertLocXServDataIntoDatabase();
-            ActiveAndroid.setTransactionSuccessful();
-        }finally {
-            ActiveAndroid.endTransaction();
+
+        }catch (Exception e){
+
         }
 
-
-        if (mService == null || mService.size() > 1) {
+        if (countOfServiceType == 0 || countOfServiceType > 1) {
             setContentView(R.layout.activity_location_service);
         } else {
             setContentView(R.layout.location_service2);
@@ -153,18 +200,36 @@ public class LocationServiceActivity extends AppCompatActivity implements Adapte
 
         if (mLocation != null) {
             ArrayList<String> locations = new ArrayList<>();
-            LocationAdapter mLocationAdapter = new LocationAdapter(getApplicationContext(), getAllLocation());
+            LocationAdapter mLocationAdapter = new LocationAdapter(getApplicationContext(), viewRecord());
 
             mSpinner.setAdapter(mLocationAdapter);
+
+
+
+            mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+                @Override
+                public void onItemSelected(AdapterView<?> arg0, View arg1,
+                                           int arg2, long arg3) {
+
+                    mLoLocation = (Locations) mSpinner.getItemAtPosition(arg2);
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> arg0) {
+                    // TODO Auto-generated method stub
+                    mLoLocation = (Locations) mSpinner.getItemAtPosition(0);
+                }
+            });
             if (countOfServiceType > 1) {
                 mServiceTypeAdapter = new ServiceTypeAdapter(this, getAllService(), getAllLocXSer());
             } else {
                 // basedOnCondition();
-                mServiceTypeAdapter = new ServiceTypeAdapter(this,  getAllService(), getAllLocXSer());
+                mServiceTypeAdapter = new ServiceTypeAdapter(this, getAllService(), getAllLocXSer());
             }
         }
         mLvServiceType.setAdapter(mServiceTypeAdapter);
-        if (mService == null || mService.size() > 1) {
+        if (countOfServiceType  > 1) {
             mLvServiceType.setOnItemClickListener(this);
         } else {
             mLvServiceType.setClickable(false);
@@ -173,68 +238,95 @@ public class LocationServiceActivity extends AppCompatActivity implements Adapte
 
     }
 
-    private List<LocationXServices> getAllLocXSer() {
-        return new Select()
-                .from(LocationXServices.class)
-                .execute();
+    private List<LocationsXService> getAllLocXSer() {
+        RealmResults<LocationsXService> results = realm.where(LocationsXService.class).findAll();
+        List<LocationsXService> mService = new ArrayList<>();
+        for (LocationsXService student : results) {
+            LocationsXService locationsXService = new LocationsXService();
+            locationsXService.setServiceID(student.getServiceID());
+            locationsXService.setLocID(student.getLocID());
+            locationsXService.setLocXServiceID(student.getLocXServiceID());
+            locationsXService.setAppointmentDuration(student.getAppointmentDuration());
+
+            mService.add(locationsXService);
+        }
+        return mService;
     }
 
-    private List<Services> getAllService() {
-        return new Select()
-                .from(Services.class)
-                .execute();
+    private List<Service> getAllService() {
+        RealmResults<Services> results = realm.where(Services.class).findAll();
+        List<Service> mService = new ArrayList<>();
+        for (Services student : results) {
+            Service service = new Service();
+            service.setServiceID(student.getServiceID());
+            service.setServiceName(student.getServiceName());
+            service.setDescription(student.getDescription());
+            service.setDuration(student.getDuration());
+
+            mService.add(service);
+        }
+        return mService;
     }
+
 
     private void insertLocXServDataIntoDatabase() {
-        for(int i=0;i<mLocationXService.size();i++){
-            LocationXServices locationsXService=new LocationXServices();
-            locationsXService.LocXServiceID=mLocationXService.get(i).getLocXServiceID();
-            locationsXService.LocId=mLocationXService.get(i).getLocID();
-            locationsXService.ServiceID=mLocationXService.get(i).getServiceID();
-            locationsXService.save();
+        for (int i = 0; i < mLocationXService.size(); i++) {
+            realm.beginTransaction();
+            LocationsXService locationsXService = realm.createObject(LocationsXService.class);
+            locationsXService.setLocXServiceID (mLocationXService.get(i).getLocXServiceID());
+            locationsXService.setLocID(mLocationXService.get(i).getLocID());
+            locationsXService.setServiceID (mLocationXService.get(i).getServiceID());
+            realm.insert(locationsXService);
+            realm.commitTransaction();
         }
 
     }
 
     private void insertServiceDataIntoDatabase() {
 
-        for(int i=0;i<mService.size();i++) {
-            Services service=new Services();
-            service.ServiceID = mService.get(i).getServiceID();
-            service.ServiceName=mService.get(i).getServiceName();
-            service.Description=mService.get(i).getDescription();
-            service.Duration=mService.get(i).getDuration();
-            service.IsActive=mService.get(i).getIsActive();
-            service.save();
+        for (int i = 0; i < mService.size(); i++) {
+            realm.beginTransaction();
+            Services services=realm.createObject(Services.class);
+            services.setServiceID(mService.get(i).getServiceID());
+            services.setServiceName(mService.get(i).getServiceName());
+            services.setDescription(mService.get(i).getDescription());
+            services.setDuration(mService.get(i).getDuration());
+            services.setIsActive(mService.get(i).getIsActive());
+            realm.insert(services);
+            realm.commitTransaction();
         }
     }
 
-    private List<Locations> getAllLocation() {
-        //Getting all items stored in Inventory table
-        return new Select()
-                .from(Locations.class)
-                .execute();
-    }
 
     private void basedOnCondition() {
         mTvBookAppoin = (TextView) findViewById(R.id.tv_book_appointment);
         mTvBookAppoin.setOnClickListener(this);
     }
 
-
-    @Override
+   @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        Service mSpService = (Service) mLvServiceType.getItemAtPosition(i);
-        Location mLoLocation = (Location) mSpinner.getItemAtPosition(i);
+        chcekingLocations();
+        mSpService= (Service) mLvServiceType.getItemAtPosition(i);
         Intent inte = new Intent(this, AppointementBookingActivity.class);
         inte.putExtra("location", mLoLocation);
         inte.putExtra("service", mSpService);
         startActivity(inte);
     }
 
+    private void chcekingLocations() {
+        if(mLoLocation == null)
+        mLoLocation = (Locations) mSpinner.getItemAtPosition(0);
+    }
+
     @Override
     public void onClick(View view) {
+        chcekingLocations();
+        mSpService= (Service) mLvServiceType.getItemAtPosition(0);
         Intent inte = new Intent(this, AppointementBookingActivity.class);
+        inte.putExtra("location", mLoLocation);
+        inte.putExtra("service", mSpService);
         startActivity(inte);
+
     }
+
 }

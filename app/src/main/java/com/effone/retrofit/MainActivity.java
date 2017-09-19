@@ -1,6 +1,5 @@
 package com.effone.retrofit;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -22,14 +21,13 @@ import com.effone.retrofit.model.UpCommingAppointmentModel;
 import com.effone.retrofit.rest.ApiClient;
 import com.effone.retrofit.rest.ApiInterface;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
+import io.realm.Realm;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -46,21 +44,23 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private ImageView mIvBackBtn;
     private TextView mTvTitle;
     private String formattedDate;
-
+    private Realm realm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         mCalendar = Calendar.getInstance();
         mLvAppo = (ListView) findViewById(R.id.lv_upcomingAppointent);
         upcomingAppointmentList();
         declarations();
-
-        //Log.e("DATE",""+newstring);
-
+        Realm.init(this);
+        realm = Realm.getDefaultInstance();
         mLvAppo.setOnItemClickListener(this);
     }
+
+
 
 
     private void declarations() {
@@ -93,6 +93,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 Result[] movies = response.body().getResult();
                 List<Result> data = Arrays.asList(movies);
                 upCommingAppointmentAdapter = new UpCommingAppointmentAdapter(MainActivity.this, data);
+
+
                 mLvAppo.setAdapter(upCommingAppointmentAdapter);
             }
 
@@ -152,4 +154,5 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 break;
         }
     }
+
 }

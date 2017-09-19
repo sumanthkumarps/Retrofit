@@ -7,11 +7,9 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.effone.retrofit.Locations;
 import com.effone.retrofit.R;
-import com.effone.retrofit.model.Location;
+import com.effone.retrofit.databaseModel.Locations;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -47,8 +45,8 @@ public class LocationAdapter  extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
         view = inflter.inflate(R.layout.date_time_slot, null);
         TextView names = (TextView) view.findViewById(R.id.ad_tv_date_time);
-        if(mLocatin.get(i).IsActive)
-        names.setText(mLocatin.get(i).LocName);
+
+        names.setText(mLocatin.get(i).getLocName());
         return view;
     }
 }

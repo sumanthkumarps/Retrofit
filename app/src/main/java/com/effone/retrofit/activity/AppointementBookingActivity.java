@@ -17,8 +17,11 @@ import android.widget.Toast;
 
 import com.effone.retrofit.R;
 import com.effone.retrofit.adapter.TimeSlotAdapter;
+import com.effone.retrofit.databaseModel.Locations;
 import com.effone.retrofit.model.AppointmentBookingModel;
 import com.effone.retrofit.model.DateTime;
+import com.effone.retrofit.model.Location;
+import com.effone.retrofit.model.Service;
 import com.effone.retrofit.model.Time;
 import com.effone.retrofit.model.TimeSlotStrings;
 import com.effone.retrofit.rest.ApiClient;
@@ -44,13 +47,16 @@ public class AppointementBookingActivity extends AppCompatActivity {
     private TextView mTvSubmit;
     private TextView mTvTitle;
     private ArrayList<Time> movies;
-
+    private Locations locaiton;
+    private Service service;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_appointement_booking);
         myCalendar = Calendar.getInstance();
+        locaiton= (Locations) getIntent().getSerializableExtra("location");
+        service=(Service)getIntent().getSerializableExtra("service");
         this.arraySpinner = new String[]{
                 " ", "Mr", "Miss", "Ms", "Mrs", "Dr"
         };
@@ -62,7 +68,7 @@ public class AppointementBookingActivity extends AppCompatActivity {
         ApiInterface apiService =
                 ApiClient.getClient().create(ApiInterface.class);
 
-        Call<DateTime> call = apiService.getDateTimeSlots(getString(R.string.token),2,2,"09/15/2017","India Standard Time");
+        Call<DateTime> call = apiService.getDateTimeSlots(getString(R.string.token),1,1,"09/20/2017","India Standard Time");
         call.enqueue(new Callback<DateTime>() {
             @Override
             public void onResponse(Call<DateTime> call, Response<DateTime> response) {
